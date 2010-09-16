@@ -1,0 +1,20 @@
+{% extends "site_base.html" %}
+
+
+{% block body %}
+<h1>{{ object.name}}</h1>
+<p>Race date: {{ object.date|date }}</p>
+<p>{{ object.description }}</p>
+<p>Location: {{ object.location }}</p>
+<p>Contact Information:
+	<blockquote>
+		Name: {{object.contact_name}}<br />
+		Email: <a href="mailto:{{object.contact_email}}">{{object.contact_email}}</a><br />
+		Phone: {{object.contact_phone}}<br />
+	</blockquote>
+</p>
+{% for event in object.events %}
+  Distance: {{ event.distance}}
+{% endfor %}
+
+{% endblock %}

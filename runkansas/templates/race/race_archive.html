@@ -1,0 +1,17 @@
+{% extends "site_base.html" %}
+
+
+{% block body %}
+<h1>Races List</h1>
+{% for race in latest %}
+    <p>{{race.date|date}} &ndash; <a href="{{race.get_absolute_url}}">{{race.name}}</a></p>
+	<p>Contact Information:
+	<blockquote>
+		Name: {{race.contact_name}}<br />
+		Email: <a href="mailto:{{race.contact_email}}">{{race.contact_email}}</a><br />
+		Phone: {{race.contact_phone}}<br />
+	</blockquote>
+	</p>
+{% endfor %}
+
+{% endblock %}

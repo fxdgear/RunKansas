@@ -20,6 +20,19 @@ class Race(models.Model):
     def __unicode__(self):
         return self.name
     
+    @models.permalink
+    def get_absolute_url(self):
+        return ('race_detail', (), {
+            'year': self.date.year,
+            'month': self.date.strftime('%b').lower(),
+            'day': self.date.strftime('%d'),
+            'slug': self.slug
+        })
+    
+    @property
+    def events(self):
+        return self.event_set.all()
+    
 class Distance(models.Model):
     UNIT_CHOICES = (
         (1, 'km'),
