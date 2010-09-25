@@ -1,0 +1,24 @@
+{% extends "site_base.html" %}
+
+{% block head_title %}Races for {{ month|date:"F" }}{% endblock %}
+{% block body %}
+<h1>Races for {{ month|date:"F" }}</h1>
+
+{% for race in object_list %}
+	<hr>
+    <p>{{race.date|date}} &ndash; <a href="{{race.get_absolute_url}}">{{race.name}}</a> 
+	{% if race.type %}&ndash; {{ race.type }} race{% endif %}</p>
+    <p>Race URL: {{ race.url }}</p>
+	<p>Contact Information:
+	<blockquote>
+		Name: {{race.contact_name}}<br />
+		Email: <a href="mailto:{{race.contact_email}}">{{race.contact_email}}</a><br />
+		Phone: {{race.contact_phone}}<br />
+	</blockquote>
+	</p>
+{% endfor %}
+<hr>
+<a href="/race/{{ previous_month.year }}/{{ previous_month|date:"b"}}">&lt;&lt;{{previous_month|date:"F"}}</a> | 
+<a href="/race/{{ next_month.year }}/{{ next_month|date:"b" }}">{{ next_month|date:"F" }}&gt;&gt;</a>
+
+{% endblock %}

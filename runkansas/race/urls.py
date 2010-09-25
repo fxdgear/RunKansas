@@ -10,7 +10,8 @@ race_qs_dict = {
 }
 
 urlpatterns = patterns('',
-     (r'^$', archive_index, race_qs_dict, 'race_archive_index'),
+     (r'^$', 'runkansas.race.views.current_month' ),
+     #(r'^$', archive_index, race_qs_dict, 'race_archive_index'),
      (r'^(?P<year>\d{4})/$', archive_year, race_qs_dict, 'race_archive_year'),
      (r'^(?P<year>\d{4})/(?P<month>\w{3})/$', archive_month, race_qs_dict, 'race_archive_month'),
      (r'^(?P<year>\d{4})/(?P<month>\w{3})/(?P<day>\d{2})/$', archive_day, race_qs_dict, 'race_archive_day'),

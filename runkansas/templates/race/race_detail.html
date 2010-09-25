@@ -1,11 +1,14 @@
 {% extends "site_base.html" %}
 
+{% block head_title %}{{ object.name }}{% endblock %}
+
 
 {% block body %}
-<h1>{{ object.name}}</h1>
+<h1><a href="{{ object.url }}">{{ object.name}}</a></h1>
 <p>Race date: {{ object.date|date }}</p>
 <p>{{ object.description }}</p>
 <p>Location: {{ object.location }}</p>
+<p>Race URL: {{ object.url }}</p>
 <p>Contact Information:
 	<blockquote>
 		Name: {{object.contact_name}}<br />
@@ -13,8 +16,11 @@
 		Phone: {{object.contact_phone}}<br />
 	</blockquote>
 </p>
+{% if object.events|length_is:"1" %}Event:{% else %}Events:{% endif %}
+<blockquote>
 {% for event in object.events %}
-  Distance: {{ event.distance}}
+  {{ event.distance }} starts on {{event.date|date:"N d"}} at {{ event.date|date:"f a"}}<br />
 {% endfor %}
+</blockquote>
 
 {% endblock %}
