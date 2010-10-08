@@ -65,7 +65,7 @@ class BaseDistanceFormSet(BaseFormSet):
            
 class EventForm(forms.Form):
     distance = forms.ModelChoiceField(queryset=Distance.objects.all(), label="Distance")
-    date = forms.SplitDateTimeField()
+    date = forms.DateTimeField()
 
     class Meta:
         model = Event
