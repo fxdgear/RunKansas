@@ -1,0 +1,26 @@
+{% extends "site_base.html" %}
+
+{% block extra_head %}
+<script type="text/javascript" src="/site_media/static/js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="/site_media/static/js/dynamic-formset.js"></script>
+
+{% endblock %}
+
+{% block head_title %}Add a race{% endblock %}
+
+
+{% block body %}
+<div>
+    <div class="entry">
+		<form action="/race/add/" method="post">
+			{% csrf_token %}
+			{% include "race/includes/forms/add_race_form.html" %}
+			<input type="submit" value="Submit" />
+			<hr \>
+			{% include "race/includes/forms/add_event_form.html" %}
+			<hr \>
+			{% include "race/includes/forms/add_distance_form.html" %}
+		</form>
+	</div>
+</div>
+{% endblock %}

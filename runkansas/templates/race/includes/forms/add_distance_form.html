@@ -1,0 +1,8 @@
+<h2>Create new distance</h2>
+{{ distance_formset.management_form }}
+<table>
+    {% for form in distance_formset.forms %}
+    	{{ form.as_table }}
+    	{{ form.errors }}
+	{% endfor %}
+</table>

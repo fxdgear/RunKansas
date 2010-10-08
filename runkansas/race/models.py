@@ -57,7 +57,6 @@ class Race(models.Model):
             if self.race_type == i:
                 return t
         
-        
     
 class Distance(models.Model):
     UNIT_CHOICES = (
