@@ -10,4 +10,14 @@ Dependencies
 * South
 * Pinax (basic project)
 
+ToDo
+----
 
+* Duh, unit tests and docs
+* build duplicate detectection
+* notifications of new races
+* "I'm racing" button
+* design (over all design)
+* build out profiles
+* build out personal calendar
+* more things that I can't think of
