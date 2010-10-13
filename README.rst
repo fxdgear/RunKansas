@@ -14,6 +14,7 @@ ToDo
 ----
 
 * Duh, unit tests and docs
+* incorporate django admin functionality into race submission form
 * build duplicate detectection
 * notifications of new races
 * "I'm racing" button
