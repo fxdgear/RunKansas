@@ -3,8 +3,10 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django.template.defaultfilters import slugify
-from django.forms.formsets import BaseFormSet
 from runkansas.race.models import Race, Distance, Event, RACE_CHOICES
+from django.forms.models import inlineformset_factory, BaseInlineFormSet
+
+
 
 class RaceForm(forms.Form):
     
@@ -39,7 +41,7 @@ class RaceForm(forms.Form):
             return False
         
             
-    def save(self):
+    def save(self, commit=True):
         race = Race()
         race.name = self.cleaned_data['name']
         race.slug = slugify(race.name)
@@ -53,30 +55,9 @@ class RaceForm(forms.Form):
         race.save()
         return race
 
-class BaseEventFormSet(BaseFormSet):    
-    def save(self, race):
-        for form in self.forms:
-            form.save(race)
-            
-class BaseDistanceFormSet(BaseFormSet):
-    def save(self):
-        for form in self.forms:
-            form.save()
-           
-class EventForm(forms.Form):
-    distance = forms.ModelChoiceField(queryset=Distance.objects.all(), label="Distance")
-    date = forms.DateTimeField()
 
-    class Meta:
-        model = Event
-        exclude = ('race',)
-        
-    def save(self, race):
-        event = Event()
-        event.distance = self.cleaned_data['distance']
-        event.date = self.cleaned_data['date']
-        event.race = race
-        event.save()
+EventFormSet = inlineformset_factory(Race, Event, extra=2)
+
 
 class DistanceForm(forms.ModelForm):
     title = forms.CharField(required=False)

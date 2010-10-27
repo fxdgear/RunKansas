@@ -1,6 +1,6 @@
 from django.http import HttpResponse, HttpResponseRedirect
-from runkansas.race.models import Race
-from runkansas.race.forms import RaceForm, DistanceForm, EventForm, BaseEventFormSet, BaseDistanceFormSet
+from runkansas.race.models import Race, Event
+from runkansas.race.forms import RaceForm, DistanceForm, EventFormSet
 from django.forms.formsets import formset_factory
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
@@ -28,22 +28,19 @@ def race_list(request):
     
     
 def add_race(request):
-    DistanceFormset = formset_factory(DistanceForm, formset=BaseDistanceFormSet)
-    EventFormset = formset_factory(EventForm, formset=BaseEventFormSet)
+    #DistanceFormset = formset_factory(DistanceForm, formset=BaseDistanceFormSet)
 
     if request.method == "POST":
         race_form = RaceForm(request.POST, prefix='race')
-        event_formset = EventFormset(request.POST, prefix='events')
         #distance_formset = DistanceFormset(request.POST, prefix='distances')
-        if race_form.is_valid() and event_formset.is_valid():# and distance_formset.is_valid():
+        if race_form.is_valid():# and distance_formset.is_valid():
             if race_form.exists():
                 return HttpResponse('Race Exists!') # Redirect after POST
-
             else:
                 race = race_form.save()
-                for event in event_formset.forms:
-                    event.save(race)
-                #distance_formset.save()
+                event_formset = EventFormSet(request.POST, instance=race, prefix='events')
+                if event_formset.is_valid():
+                    events = event_formset.save()
                 url = race.get_absolute_url()
                 return HttpResponseRedirect(url)
                 return HttpResponse('Thanks for submitting a race!') # Redirect after POST
@@ -52,7 +49,8 @@ def add_race(request):
             pass
     else:
         race_form = RaceForm(prefix='race')
-        event_formset = EventFormset(prefix='events')
+        
+        event_formset = EventFormSet(prefix='events')
         #distance_formset = DistanceFormset(prefix='distances')
     
     

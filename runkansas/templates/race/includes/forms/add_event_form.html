@@ -1,42 +1,23 @@
 <h2>Add an event</h2>
-<script type="text/javascript">
-    <!--
-    $(function () {
-        $('.add-row').click(function() {
-    	    return addForm(this, 'form');
-        });
-        $('.delete-row').click(function() {
-    	    return deleteForm(this, 'form');
-        })
-    })
-    //-->
-</script>
-    <table id="id_events_table" border="0" cellpadding="0" cellspacing="5">
-        <thead>
-    	    <tr>
-    	        <th scope="col">&nbsp;</th>
-    	        <th scope="col">Date/Time</th>
-    	        <th scope="col">Distance</th>
-    	        <th scope="col">&nbsp;</th>
-    	    </tr>
-        </thead>
-        <tbody>
-            {% for form in event_formset.forms %}
-    	    <tr id="{{ form.prefix }}-row" class="dynamic-form">
-    	        <td{% if forloop.first %} class="hidden"{% endif %}>{{ form.operand }}</td>
-    	        <td>{{ form.date }}</td>
-    	        <td>{{ form.distance }}</td>
-    	        <td{% if forloop.first %} class="hidden"{% endif %}>
-    	            <a id="remove-{{ form.prefix }}-row" href="javascript:void(0)" class="delete-row"></a>
-    	        </td>
-            </tr>
-    	    {% endfor %}
-            <tr>
-    	        <td colspan="4"><a href="javascript:void(0)" class="add-row">add event</a></td>
-    	    </tr>
-        </tbody>
-    </table>
-    {{ event_formset.management_form }}
+<div class="inline-group" id="event_set-group">
+<table id="id_events_table" border="0" cellpadding="0" cellspacing="5">
+  <thead>
+    <tr>
+      <th scope="col">Date/Time</th>
+      <th scope="col">Distance</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for form in event_formset.forms %}
+    <tr>
+      <td>{{ form.date }}</td>
+      <td>{{ form.distance }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{{ event_formset.management_form }}
+</div>
 
 
 
