@@ -1,26 +1,41 @@
 {% extends "site_base.html" %}
 
 {% block extra_head %}
-
-
-
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/add_tabular_inline.js"></script>
+<link rel="stylesheet" href="{{STATIC_URL}}css/screen.css" type="text/css" media="screen, projection" />
 {% endblock %}
 
 {% block head_title %}Add a race{% endblock %}
 
 
 {% block body %}
-<div>
-    <div class="entry">
+
+    <div class="container">
 		<form action="/race/add/" method="post">
 			{% csrf_token %}
-			{% include "race/includes/forms/add_race_form.html" %}
-			<input type="submit" value="Submit" />
+			{{ race_form.as_p }}
+			{{ race_form.errors }}
 			<hr \>
-			{% include "race/includes/forms/add_event_form.html" %}
-			<hr \>
-			{# {% include "race/includes/forms/add_distance_form.html" %} #}
+			{{ event_formset.management_form }}
+			<h3>Events</h3>
+			<div class="inline-group">
+			    <div class="tabular inline_related last-related">
+				  </table>
+				  {% for formset in event_formset.forms %}
+				    <table>
+					  <tr>
+					   <td>Date: {{ formset.date }}</td>
+					  </tr>
+					  <tr>
+					   <td>Distance: {{ formset.distance }}</td>
+					 </tr>  
+					</table>
+			      {% endfor %}
+				</div>
+			</div>
+			<p class="success tools"><a href="#" class="add">Add another row</a></p>
+			<input type="submit" value="Add">
 		</form>
 	</div>
-</div>
 {% endblock %}
