@@ -56,7 +56,7 @@ class RaceForm(forms.Form):
         return race
 
 
-EventFormSet = inlineformset_factory(Race, Event, extra=2)
+EventFormSet = inlineformset_factory(Race, Event, extra=1)
 
 
 class DistanceForm(forms.ModelForm):
