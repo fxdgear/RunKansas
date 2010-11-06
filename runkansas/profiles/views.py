@@ -48,7 +48,7 @@ def profiles(request, template_name="profiles/profiles.html", extra_context=None
 
 
 def profile(request, username, template_name="profiles/profile.html", extra_context=None):
-    
+    import ipdb;ipdb.set_trace()    
     if extra_context is None:
         extra_context = {}
     

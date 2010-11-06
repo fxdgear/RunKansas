@@ -2,6 +2,45 @@
 
 {% block head_title %}{{ object.name }}{% endblock %}
 
+{% block extra_head %}
+<script type="text/javascript">
+function add_to_my_races(id){
+  $.get('/race/add_to_my_races/', {race_id: id}, 
+    function(data){
+	  p = $('p.not_racing')[0];
+	  p_class = p.attributes.item('class');
+	  p_class.value = 'racing';
+	  child = p.childNodes[0];
+	  p.removeChild(child)
+
+	  new_child = document.createElement('a');
+	  new_child.setAttribute('href', '#');
+	  new_child.setAttribute('onClick', 'remove_from_my_races({{object.id}});')
+	  new_child.textContent = "I'm racing";
+	  p.appendChild(new_child);
+      alert("{{ object.name }} has been added to My Races");
+    })
+}                                                                              
+
+function remove_from_my_races(id){
+  $.get('/race/remove_from_my_races/', {race_id: id},
+    function(data){
+	  p = $('p.racing')[0];
+	  p_class = p.attributes.item('class')
+	  p_class.value = 'not_racing'
+	  child = p.childNodes[0];
+	  p.removeChild(child);
+
+	  new_child = document.createElement('a');
+	  new_child.setAttribute('href', '#');
+	  new_child.setAttribute('onClick', 'add_to_my_races({{object.id}});')
+	  new_child.textContent = "Add to My Races"
+	  p.appendChild(new_child);
+	  alert("{{ object.name }} has been removed from My Races");
+	})
+}
+</script>
+{% endblock %}
 
 {% block body %}
 <h1><a href="{{ object.url }}">{{ object.name}}</a></h1>
@@ -17,10 +56,23 @@
 	</blockquote>
 </p>
 {% if object.events|length_is:"1" %}Event:{% else %}Events:{% endif %}
-<blockquote>
+<ul>
 {% for event in object.events %}
-  {{ event.distance }} starts on {{event.date|date:"N d"}} at {{ event.date|date:"f a"}}<br />
+  <div class="racing_event_{{event.id}}">
+  <li>{{ event.distance }} starts on {{event.date|date:"N d"}} at {{ event.date|date:"f a"}} <br>
+  {% if user.is_authenticated %}
+    {% if event in user.get_profile.races.all %}  
+	  {# <p class="racing_event_{{event.id}}"><a href="#" onClick="remove_from_my_races({{event.id}});">Remove</a></p> #}
+	  <a href="/race/remove_from_my_races?event_id={{event.id}}">Remove from MyRaces</a>
+	{% else %}
+       {# <p class="not_racing"><a href="#" onClick="add_to_my_races({{event.id}});">Add</a></p> #}
+       <a href="/race/add_to_my_races?event_id={{event.id}}">Add to MyRaces</a>
+	{% endif %}
+  {% endif %}
+  </li>
+  </div>
 {% endfor %}
-</blockquote>
+</ul>
+
 
 {% endblock %}
