@@ -1,10 +1,9 @@
 from django.conf.urls.defaults import *
+from idios.urls import urlpatterns as idios_urls
 
 
-
-urlpatterns = patterns("",
-    url(r"^username_autocomplete/$", "runkansas.autocomplete_app.views.username_autocomplete_friends", name="profile_username_autocomplete"),
-    url(r"^$", "runkansas.profiles.views.profiles", name="profile_list"),
-    url(r"^profile/(?P<username>[\w\._-]+)/$", "runkansas.profiles.views.profile", name="profile_detail"),
-    url(r"^edit/$", "runkansas.profiles.views.profile_edit", name="profile_edit"),
+runks_patterns = patterns("",
+    url(r"^profile/(?P<username>[\w\._-]+)/ical/$", "runkansas.profiles.views.my_ical", name="my_ical"),
 )
+
+urlpatterns = idios_urls + runks_patterns
