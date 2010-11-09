@@ -1,4 +1,4 @@
-{% extends "site_base.html" %}
+{% extends "race/race_base.html" %}
 
 {% block head_title %}{{ object.name }}{% endblock %}
 
@@ -44,6 +44,7 @@ function remove_from_my_races(id){
 
 {% block body %}
 <h1><a href="{{ object.url }}">{{ object.name}}</a></h1>
+<p>{{ object.race_type.name }}</p>
 <p>Race date: {{ object.date|date }}</p>
 <p>{{ object.description }}</p>
 <p>Location: {{ object.location }}</p>
