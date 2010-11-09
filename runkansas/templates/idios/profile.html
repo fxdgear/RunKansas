@@ -39,7 +39,7 @@
 		{% if other_user.get_profile.completed_races %}
 		  <b>Completed races</b>:
 		    <ul>
-			{% for race in other_user.get_profile.completed_races %}
+			{% for event in other_user.get_profile.completed_races %}
 			  <li><a href="{{ event.race.get_absolute_url }}">{{ event }}</a></li>
 			{% endfor %}
 		  </ul>
