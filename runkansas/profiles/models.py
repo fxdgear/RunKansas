@@ -29,11 +29,11 @@ class Profile(ProfileBase):
     
     races = models.ManyToManyField(Event, blank=True, null=True)
 
-
+    preferences = models.ForeignKey('RacePrefrences', blank=True, null=True)
 
     class Meta:
-        verbose_name = _("race profile")
-        verbose_name_plural = _("race profiles")
+        verbose_name = _("profile")
+        verbose_name_plural = _("profiles")
     
     def __unicode__(self):
         return self.user.username
@@ -53,7 +53,6 @@ class Profile(ProfileBase):
 
 
 class RacePrefrences(models.Model):
-    user =  models.ForeignKey(User)
     types = models.ManyToManyField(RaceType)
     min_distance = models.ForeignKey(Distance, related_name="min_distance")
     max_distance = models.ForeignKey(Distance, related_name="max_distance")
@@ -63,8 +62,11 @@ class RacePrefrences(models.Model):
         verbose_name_plural = _("race preferences")
 
     def __unicode__(self):
-        return "Race Preferences for %s" % self.get_profile().name
-
+        try:
+            user = Profile.objects.get(preferences__pk=self.pk)
+            return "Race Preferences for %s" % user.name
+        except:
+            return "Race Preferences"
 
 
 def create_profile(sender, instance=None, **kwargs):
