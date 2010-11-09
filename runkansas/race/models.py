@@ -1,4 +1,5 @@
 from django.db import models
+from django.template.defaultfilters import slugify
 import datetime
 
 
@@ -25,14 +26,14 @@ class Race(models.Model):
 
     name = models.CharField(max_length=200)
     slug = models.SlugField()
-    date = models.DateTimeField()
+    date = models.DateField()
     location = models.TextField()
     url = models.URLField(blank=True, null=True)
     contact_name = models.CharField(max_length=100)
     contact_phone = models.CharField(max_length=100, blank=True, null=True)
     contact_email = models.CharField(max_length=100, blank=True, null=True)
-    race_type = models.IntegerField(choices=RACE_CHOICES, blank=True, null=True)
-    
+    #race_type = models.IntegerField(choices=RACE_CHOICES, blank=True, null=True)
+    race_type = models.ForeignKey('RaceType', related_name="type")
     objects = RaceManager()
     
     def __unicode__(self):
@@ -57,7 +58,23 @@ class Race(models.Model):
             if self.race_type == i:
                 return t
         
-    
+
+class RaceType(models.Model):
+    name = models.CharField(max_length=100)
+    terrain = models.CharField(max_length=100)
+    discipline = models.CharField(max_length=100)
+    slug = models.SlugField()
+
+    def save(self, *args, **kwargs):
+        if not self.pk or not self.slug:
+            self.slug = slugify(self.name)
+            super(RaceType, self).save(args, kwargs)
+        else:
+            super(RaceType, self).save(args, kwargs)
+
+    def __unicode__(self):
+        return self.name
+
 class Distance(models.Model):
     UNIT_CHOICES = (
         (1, 'km'),
