@@ -3,22 +3,15 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django.template.defaultfilters import slugify
-from runkansas.race.models import Race, Distance, Event, RACE_CHOICES
+from runkansas.race.models import Race, Distance, Event, RaceType
 from django.forms.models import inlineformset_factory, BaseInlineFormSet
 
 
 
-class RaceForm(forms.Form):
+class RaceForm(forms.ModelForm):
     
-    name = forms.CharField()
     date = forms.DateField()
-    location = forms.CharField()
-    url = forms.CharField(required=False)
-    contact_name = forms.CharField()
-    contact_phone = forms.CharField(required=False)
-    contact_email = forms.CharField(required=False)
-    race_type = forms.CharField(widget=forms.Select(choices=RACE_CHOICES))
-    
+
     class Meta:
         model = Race
         exclude = ('slug', )

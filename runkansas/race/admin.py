@@ -1,5 +1,5 @@
 from django.contrib import admin
-from runkansas.race.models import Race, Distance, Event
+from runkansas.race.models import Race, Distance, Event, RaceType
 
 class EventInline(admin.TabularInline):
     model = Event
@@ -11,6 +11,10 @@ class RaceAdmin(admin.ModelAdmin):
     list_display = ('name', 'date', 'contact_name', 'contact_phone', 'contact_email',)
     list_filter = ('date',)
     
+class RaceTypeAdmin(admin.ModelAdmin):
+    prepopulated_fields = {"slug": ("name",)}
+
+
 class DistanceAdmin(admin.ModelAdmin):
     pass
     
@@ -20,3 +24,4 @@ class EventAdmin(admin.ModelAdmin):
 admin.site.register(Race, RaceAdmin)
 admin.site.register(Distance, DistanceAdmin)
 admin.site.register(Event, EventAdmin)
+admin.site.register(RaceType, RaceTypeAdmin)
