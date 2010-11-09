@@ -73,6 +73,7 @@ def add_race(request):
     #DistanceFormset = formset_factory(DistanceForm, formset=BaseDistanceFormSet)
 
     if request.method == "POST":
+        import ipdb;ipdb.set_trace()
         race_form = RaceForm(request.POST, prefix='race')
         #distance_formset = DistanceFormset(request.POST, prefix='distances')
         if race_form.is_valid():# and distance_formset.is_valid():
@@ -88,7 +89,14 @@ def add_race(request):
                 return HttpResponse('Thanks for submitting a race!') # Redirect after POST
         else:
             #something went wrong
-            pass
+            event_formset = EventFormSet(request.POST, prefix='events')
+            return render_to_response('race/add_race.html',
+                   {
+                       'race_form': race_form,
+                       'event_formset': event_formset,
+                   },
+                   context_instance=RequestContext(request)
+                )
     else:
         race_form = RaceForm(prefix='race')
         
