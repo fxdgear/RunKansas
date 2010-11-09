@@ -4,7 +4,7 @@ from django.db.models.signals import post_save
 from django.utils.translation import ugettext_lazy as _
 from idios.models import ProfileBase
 
-from runkansas.race.models import Race, Event
+from runkansas.race.models import Race, Event, RaceType, Distance
 
 from django.contrib.auth.models import User
 from timezones.fields import TimeZoneField
@@ -29,6 +29,8 @@ class Profile(ProfileBase):
     
     races = models.ManyToManyField(Event, blank=True, null=True)
 
+
+
     class Meta:
         verbose_name = _("race profile")
         verbose_name_plural = _("race profiles")
@@ -50,10 +52,27 @@ class Profile(ProfileBase):
 	    return self.races.filter(date__lt=datetime.date.today())
 
 
+class RacePrefrences(models.Model):
+    user =  models.ForeignKey(User)
+    types = models.ManyToManyField(RaceType)
+    min_distance = models.ForeignKey(Distance, related_name="min_distance")
+    max_distance = models.ForeignKey(Distance, related_name="max_distance")
+
+    class Meta:
+        verbose_name = _("race preference")
+        verbose_name_plural = _("race preferences")
+
+    def __unicode__(self):
+        return "Race Preferences for %s" % self.get_profile().name
+
+
+
 def create_profile(sender, instance=None, **kwargs):
     if instance is None:
         return
     profile, created = Profile.objects.get_or_create(user=instance)
+
+
 
 
 post_save.connect(create_profile, sender=User)

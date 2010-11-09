@@ -1,6 +1,6 @@
 from django import forms
 
-from pinax.apps.profiles.models import Profile
+from runkansas.profiles.models import Profile
 
 
 
@@ -10,9 +10,5 @@ class ProfileForm(forms.ModelForm):
         model = Profile
         exclude = [
             "user",
-            "blogrss",
-            "timezone",
-            "language",
-            "twitter_user",
-            "twitter_password",
+            "races",
         ]
