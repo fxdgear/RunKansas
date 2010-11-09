@@ -15,17 +15,29 @@ class Migration(SchemaMigration):
             ('slug', self.gf('django.db.models.fields.SlugField')(max_length=50, db_index=True)),
             ('date', self.gf('django.db.models.fields.DateTimeField')()),
             ('location', self.gf('django.db.models.fields.TextField')()),
+            ('url', self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True)),
             ('contact_name', self.gf('django.db.models.fields.CharField')(max_length=100)),
-            ('contact_phone', self.gf('django.db.models.fields.CharField')(max_length=100)),
-            ('contact_email', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('contact_phone', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
+            ('contact_email', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
+            ('race_type', self.gf('django.db.models.fields.related.ForeignKey')(related_name='type', to=orm['race.RaceType'])),
         ))
         db.send_create_signal('race', ['Race'])
+
+        # Adding model 'RaceType'
+        db.create_table('race_racetype', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('terrain', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('discipline', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('slug', self.gf('django.db.models.fields.SlugField')(max_length=50, db_index=True)),
+        ))
+        db.send_create_signal('race', ['RaceType'])
 
         # Adding model 'Distance'
         db.create_table('race_distance', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('title', self.gf('django.db.models.fields.CharField')(max_length=40)),
-            ('distance', self.gf('django.db.models.fields.IntegerField')()),
+            ('distance', self.gf('django.db.models.fields.DecimalField')(max_digits=10, decimal_places=1)),
             ('unit', self.gf('django.db.models.fields.IntegerField')()),
         ))
         db.send_create_signal('race', ['Distance'])
@@ -45,6 +57,9 @@ class Migration(SchemaMigration):
         # Deleting model 'Race'
         db.delete_table('race_race')
 
+        # Deleting model 'RaceType'
+        db.delete_table('race_racetype')
+
         # Deleting model 'Distance'
         db.delete_table('race_distance')
 
@@ -55,7 +70,7 @@ class Migration(SchemaMigration):
     models = {
         'race.distance': {
             'Meta': {'object_name': 'Distance'},
-            'distance': ('django.db.models.fields.IntegerField', [], {}),
+            'distance': ('django.db.models.fields.DecimalField', [], {'max_digits': '10', 'decimal_places': '1'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '40'}),
             'unit': ('django.db.models.fields.IntegerField', [], {})
@@ -69,14 +84,24 @@ class Migration(SchemaMigration):
         },
         'race.race': {
             'Meta': {'object_name': 'Race'},
-            'contact_email': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'contact_email': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
             'contact_name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'contact_phone': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'contact_phone': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
             'date': ('django.db.models.fields.DateTimeField', [], {}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'location': ('django.db.models.fields.TextField', [], {}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
-            'slug': ('django.db.models.fields.SlugField', [], {'max_length': '50', 'db_index': 'True'})
+            'race_type': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'type'", 'to': "orm['race.RaceType']"}),
+            'slug': ('django.db.models.fields.SlugField', [], {'max_length': '50', 'db_index': 'True'}),
+            'url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
+        },
+        'race.racetype': {
+            'Meta': {'object_name': 'RaceType'},
+            'discipline': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'slug': ('django.db.models.fields.SlugField', [], {'max_length': '50', 'db_index': 'True'}),
+            'terrain': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         }
     }
 
